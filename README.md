@@ -22,3 +22,10 @@ $ yt-dlp_alexwlchan.py "https://www.youtube.com/watch?v=TUQaGhPdlxs"
 
 I have other scripts that know how to read this format, and it allows me to consolidate all my YouTube-handling logic in one place.
 Other scripts can call this script and get the title or description "for free".
+
+## What it does
+
+*   Downloads the video, thumbnail, and subtitles to a temporary directory
+*   Convert the video to MP4 and the thumbnail to JPEG (my preferred formats)
+*   Gets some info about the video (title, description) and channel (name, URL, avatar URL)
+*   Prints all that info in a convenient JSON object
