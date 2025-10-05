@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
@@ -87,6 +88,7 @@ class VideoInfo(TypedDict):
     url: str
     title: str
     description: str
+    date_posted: str
     video_path: Path
     thumbnail_path: Path
     subtitle_path: Path
@@ -131,11 +133,14 @@ def download_video(url: str) -> VideoInfo:
     else:
         sys.exit(f"Unsupported extractor: {video_info['extractor']}")
 
+    date_uploaded = datetime.fromtimestamp(video_info["timestamp"], tz=timezone.utc)
+
     return {
         "id": video_info["id"],
         "url": url,
         "title": video_info["title"],
         "description": video_info["description"],
+        "date_uploaded": date_uploaded.isoformat().replace("+00:00", "Z"),
         "video_path": video_path,
         "thumbnail_path": thumbnail_path,
         "subtitle_path": subtitle_path,
