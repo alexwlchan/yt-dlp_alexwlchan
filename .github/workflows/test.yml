@@ -1,0 +1,40 @@
+name: Test
+
+on:
+  push:
+    branches:
+    - main
+
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        python-version:
+          - "3.13"
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: 'dev_requirements.txt'
+
+    - name: Install dependencies
+      run: pip install -r dev_requirements.txt
+
+    - name: Check formatting
+      run: |
+        ruff check .
+        ruff format --check .
+
+    - name: Run tests
+      run: pytest tests
