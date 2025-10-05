@@ -5,6 +5,7 @@ This is a personal wrapper around [yt-dlp](https://github.com/yt-dlp/yt-dlp) tha
 ```console
 $ yt-dlp_alexwlchan.py "https://www.youtube.com/watch?v=TUQaGhPdlxs"
 {
+  "id": "TUQaGhPdlxs",
   "url": "https://www.youtube.com/watch?v=TUQaGhPdlxs",
   "title": "\"new york city, manhattan, people\" - Free Public Domain Video",
   "description": "All videos uploaded to this channel are in the Public Domain: Free for use by anyone for any purpose without restriction. #PublicDomain",

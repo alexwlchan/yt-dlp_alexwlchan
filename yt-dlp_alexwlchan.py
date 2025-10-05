@@ -83,6 +83,7 @@ class ChannelInfo(TypedDict):
 
 
 class VideoInfo(TypedDict):
+    id: str
     url: str
     title: str
     description: str
@@ -131,6 +132,7 @@ def download_video(url: str) -> VideoInfo:
         sys.exit(f"Unsupported extractor: {video_info['extractor']}")
 
     return {
+        "id": video_info["id"],
         "url": url,
         "title": video_info["title"],
         "description": video_info["description"],
