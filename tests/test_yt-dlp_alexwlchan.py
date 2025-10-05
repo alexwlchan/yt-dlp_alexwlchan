@@ -24,6 +24,8 @@ def test_youtube_video() -> None:
     assert os.path.exists(video_info["thumbnail_path"])
     assert video_info["subtitle_path"] is None
 
+    assert video_info["id"] == "TUQaGhPdlxs"
+
 
 def test_instagram_video() -> None:
     """
@@ -41,3 +43,5 @@ def test_instagram_video() -> None:
         video_info["channel"]["channel_url"]
         == "https://www.instagram.com/publicdomaingems/"
     )
+
+    assert video_info["id"] == "DMWY8KkOS0n"
