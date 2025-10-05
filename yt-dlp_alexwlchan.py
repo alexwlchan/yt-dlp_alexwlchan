@@ -57,9 +57,7 @@ def get_avatar_url(channel_url: str) -> str:
         channel_info = ydl.extract_info(channel_url, download=False)
 
     thumbnails = channel_info["thumbnails"]
-    best_thumbnail = next(
-        t for t in thumbnails if t['id'] == 'avatar_uncropped'
-    )
+    best_thumbnail = next(t for t in thumbnails if t["id"] == "avatar_uncropped")
     return best_thumbnail["url"]
 
 
