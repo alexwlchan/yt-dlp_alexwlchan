@@ -29,3 +29,27 @@ Other scripts can call this script and get the title or description "for free".
 *   Convert the video to MP4 and the thumbnail to JPEG (my preferred formats)
 *   Gets some info about the video (title, description) and channel (name, URL, avatar URL)
 *   Prints all that info in a convenient JSON object
+
+## Installation
+
+Clone the repo, create a virtualenv, and install dependencies:
+
+```console
+$ git clone https://github.com/alexwlchan/yt-dlp_alexwlchan.git
+$ cd yt-dlp_alexwlchan
+$ python3 -m venv .venv
+$ pip install -r requirements.txt
+```
+
+Then save the following script somewhere in your PATH (replacing the `cd` with the root to your checkout):
+
+```shell
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+
+cd ~/repos/yt-dlp_alexwlchan
+source .venv/bin/activate
+python3 yt-dlp_alexwlchan.py "$@"
+```
