@@ -53,3 +53,18 @@ cd ~/repos/yt-dlp_alexwlchan
 source .venv/bin/activate
 python3 yt-dlp_alexwlchan.py "$@"
 ```
+
+## Can other people use this?
+
+You're welcome to, but I wouldn't recommend it.
+Partly because I don't guarantee long-term stability or support, partly because you'll have different preferences to me.
+
+Instead, use this script as a starting point to write your own variant.
+
+## Why did you pick this name?
+
+yt-dlp uses this name for its [release variants](https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#release-files) (e.g. `yt-dlp_linux`, `yt-dlp_win`, `yt-dlp_macos`).
+This is my variant!
+
+I'm not a yt-dlp contributor; this isn't endorsed by or affiliated with yt-dlp.
+It's just my wrapper around their project.
