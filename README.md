@@ -9,6 +9,7 @@ $ yt-dlp_alexwlchan.py "https://www.youtube.com/watch?v=TUQaGhPdlxs"
   "url": "https://www.youtube.com/watch?v=TUQaGhPdlxs",
   "title": "\"new york city, manhattan, people\" - Free Public Domain Video",
   "description": "All videos uploaded to this channel are in the Public Domain: Free for use by anyone for any purpose without restriction. #PublicDomain",
+  "date_uploaded": "2022-03-25T01:10:38Z",
   "video_path": "\uff02new york city, manhattan, people\uff02 - Free Public Domain Video [TUQaGhPdlxs].mp4",
   "thumbnail_path": "\uff02new york city, manhattan, people\uff02 - Free Public Domain Video [TUQaGhPdlxs].jpg",
   "subtitle_path": null,
