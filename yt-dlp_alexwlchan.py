@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import json
-import os
+from pathlib import Path
 import sys
 import tempfile
+from typing import TypedDict
 
 from yt_dlp import YoutubeDL
 
@@ -61,25 +62,35 @@ def get_avatar_url(channel_url: str) -> str:
     return best_thumbnail["url"]
 
 
-if __name__ == "__main__":
-    try:
-        url = sys.argv[1]
-    except IndexError:
-        sys.exit(f"Usage: {__file__} URL")
+class ChannelInfo(TypedDict):
+    id: str
+    name: str
+    url: str
+    avatar_url: str
 
-    tmp_dir = tempfile.mkdtemp()
 
-    os.chdir(tmp_dir)
+class VideoInfo(TypedDict):
+    url: str
+    title: str
+    description: str
+    video_path: Path
+    thumbnail_path: Path
+    subtitle_path: Path
+    channel: ChannelInfo
+
+
+def download_video(url: str) -> VideoInfo:
+    tmp_dir = Path(tempfile.mkdtemp())
+
+    ydl_opts["outtmpl"] = str(tmp_dir / "%(title)s.%(ext)s")
 
     with YoutubeDL(ydl_opts) as ydl:
         video_info = ydl.extract_info(url)
 
-    downloaded_files = os.listdir(tmp_dir)
-
-    video_path = next(p for p in downloaded_files if p.endswith(".mp4"))
-    thumbnail_path = next(p for p in downloaded_files if p.endswith(".jpg"))
+    video_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".mp4")
+    thumbnail_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".jpg")
     try:
-        subtitle_path = next(p for p in downloaded_files if p.endswith(".vtt"))
+        subtitle_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".vtt")
     except StopIteration:
         subtitle_path = None
 
@@ -100,4 +111,29 @@ if __name__ == "__main__":
         "channel": channel,
     }
 
-    print(json.dumps(result, indent=2))
+    return result
+
+
+class PathEncoder(json.JSONEncoder):
+    """
+    Custom JSON encoder that encodes paths as a string.
+    """
+
+    def default(self, o):
+        if isinstance(o, Path):
+            return str(o.absolute())
+        else:
+            return super().default(o)
+
+
+if __name__ == "__main__":
+    try:
+        url = sys.argv[1]
+    except IndexError:
+        sys.exit(f"Usage: {__file__} URL")
+
+    video_info = download_video(url)
+
+    json_string = json.dumps(video_info, indent=2, cls=PathEncoder)
+
+    print(json_string)

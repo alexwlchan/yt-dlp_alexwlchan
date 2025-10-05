@@ -14,10 +14,20 @@ idna==3.10
     # via
     #   -r requirements.txt
     #   requests
+iniconfig==2.1.0
+    # via pytest
 mutagen==1.47.0
     # via -r requirements.txt
+packaging==25.0
+    # via pytest
+pluggy==1.6.0
+    # via pytest
 pycryptodomex==3.23.0
     # via -r requirements.txt
+pygments==2.19.2
+    # via pytest
+pytest==8.4.2
+    # via -r dev_requirements.in
 requests==2.32.5
     # via -r requirements.txt
 ruff==0.13.3
