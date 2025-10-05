@@ -10,6 +10,8 @@ charset-normalizer==3.4.3
     # via
     #   -r requirements.txt
     #   requests
+gallery-dl==1.30.9
+    # via -r requirements.txt
 idna==3.10
     # via
     #   -r requirements.txt
@@ -29,7 +31,9 @@ pygments==2.19.2
 pytest==8.4.2
     # via -r dev_requirements.in
 requests==2.32.5
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   gallery-dl
 ruff==0.13.3
     # via -r dev_requirements.in
 urllib3==2.5.0

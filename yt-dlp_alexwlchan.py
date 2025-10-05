@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 from typing import TypedDict
@@ -38,7 +39,7 @@ ydl_opts = {
 }
 
 
-def get_avatar_url(channel_url: str) -> str:
+def get_youtube_avatar_url(channel_url: str) -> str:
     """
     Returns the avatar URL of a YouTube channel.
     """
@@ -62,6 +63,18 @@ def get_avatar_url(channel_url: str) -> str:
     return best_thumbnail["url"]
 
 
+def get_instagram_avatar_url(channel_name: str) -> str:
+    """
+    Returns the avatar URL of an Instagram channel.
+    """
+    output = subprocess.check_output(
+        ["gallery-dl", "--get-urls", f"https://www.instagram.com/{channel_name}/avatar"]
+    )
+    avatar_url = output.strip().decode("utf8")
+
+    return avatar_url
+
+
 class ChannelInfo(TypedDict):
     id: str
     name: str
@@ -77,6 +90,7 @@ class VideoInfo(TypedDict):
     thumbnail_path: Path
     subtitle_path: Path
     channel: ChannelInfo
+    site: str
 
 
 def download_video(url: str) -> VideoInfo:
@@ -95,14 +109,28 @@ def download_video(url: str) -> VideoInfo:
     except StopIteration:
         subtitle_path = None
 
-    channel = {
-        "id": video_info["channel_id"],
-        "name": video_info["channel"],
-        "url": video_info["channel_url"],
-        "avatar_url": get_avatar_url(video_info["channel_url"]),
-    }
+    if video_info["extractor"] == "youtube":
+        site = "youtube"
+        channel = {
+            "id": video_info["channel_id"],
+            "name": video_info["channel"],
+            "url": video_info["channel_url"],
+            "avatar_url": get_youtube_avatar_url(video_info["channel_url"]),
+        }
+    elif video_info["extractor"] == "Instagram":
+        with open("out.json", "w") as of:
+            of.write(str(video_info))
+        site = "instagram"
+        channel = {
+            "id": video_info["uploader_id"],
+            "name": video_info["uploader"],
+            "channel_url": f"https://www.instagram.com/{video_info['channel']}/",
+            "avatar_url": get_instagram_avatar_url(channel_name=video_info["channel"]),
+        }
+    else:
+        sys.exit(f"Unsupported extractor: {video_info['extractor']}")
 
-    result = {
+    return {
         "url": url,
         "title": video_info["title"],
         "description": video_info["description"],
@@ -110,9 +138,8 @@ def download_video(url: str) -> VideoInfo:
         "thumbnail_path": thumbnail_path,
         "subtitle_path": subtitle_path,
         "channel": channel,
+        "site": site,
     }
-
-    return result
 
 
 class PathEncoder(json.JSONEncoder):
