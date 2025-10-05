@@ -8,6 +8,8 @@ certifi==2025.10.5
     #   yt-dlp
 charset-normalizer==3.4.3
     # via requests
+gallery-dl==1.30.9
+    # via -r requirements.in
 idna==3.10
     # via requests
 mutagen==1.47.0
@@ -15,7 +17,9 @@ mutagen==1.47.0
 pycryptodomex==3.23.0
     # via yt-dlp
 requests==2.32.5
-    # via yt-dlp
+    # via
+    #   gallery-dl
+    #   yt-dlp
 urllib3==2.5.0
     # via
     #   requests

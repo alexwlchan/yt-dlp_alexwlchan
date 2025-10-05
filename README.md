@@ -16,11 +16,12 @@ $ yt-dlp_alexwlchan.py "https://www.youtube.com/watch?v=TUQaGhPdlxs"
     "name": "Public Domain Archive",
     "url": "https://www.youtube.com/channel/UCDeqps8f3hoHm6DHJoseDlg",
     "avatar_url": "https://yt3.googleusercontent.com/ytc/AIdro_kbeCfc5KrnLmdASZQ9u649IxrxEUXsUaxdSUR_jA_4SZQ=s0"
-  }
+  },
+  "site": "youtube"
 }
 ```
 
-I have other scripts that know how to read this format, and it allows me to consolidate all my YouTube-handling logic in one place.
+I have other scripts that know how to read this format, and it allows me to consolidate all my video-downloading logic in one place.
 Other scripts can call this script and get the title or description "for free".
 
 ## What it does
@@ -53,6 +54,10 @@ cd ~/repos/yt-dlp_alexwlchan
 source .venv/bin/activate
 python3 yt-dlp_alexwlchan.py "$@"
 ```
+
+## Supported sites
+
+yt-dlp supports a wide range of site, but I only map YouTube and Instagram with this tool.
 
 ## Can other people use this?
 
