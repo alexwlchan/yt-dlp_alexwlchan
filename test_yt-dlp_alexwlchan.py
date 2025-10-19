@@ -29,6 +29,8 @@ def test_youtube_video() -> None:
     assert video_info["id"] == "TUQaGhPdlxs"
     assert video_info["date_uploaded"] == "2022-03-25T01:10:38Z"
 
+    assert video_info["video_path"].endswith(" [TUQaGhPdlxs].mp4")
+
 
 def test_instagram_video() -> None:
     """
@@ -49,3 +51,5 @@ def test_instagram_video() -> None:
 
     assert video_info["id"] == "DMWY8KkOS0n"
     assert video_info["date_uploaded"] == "2025-07-21T00:34:41Z"
+
+    assert video_info["video_path"].endswith(" [DMWY8KkOS0n].mp4")
