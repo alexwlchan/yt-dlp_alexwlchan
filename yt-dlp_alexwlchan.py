@@ -123,8 +123,6 @@ def download_video(url: str) -> VideoInfo:
             "avatar_url": get_youtube_avatar_url(video_info["channel_url"]),
         }
     elif video_info["extractor"] == "Instagram":
-        with open("out.json", "w") as of:
-            of.write(str(video_info))
         site = "instagram"
         channel = {
             "id": video_info["uploader_id"],
