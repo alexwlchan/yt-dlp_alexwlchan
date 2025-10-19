@@ -1,4 +1,6 @@
 -r requirements.txt
 
+mypy
 pytest
 ruff
+types-yt-dlp
