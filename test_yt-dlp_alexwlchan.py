@@ -24,6 +24,7 @@ def test_youtube_video() -> None:
     assert os.path.exists(video_info["video_path"])
     assert os.path.exists(video_info["thumbnail_path"])
     assert video_info["subtitle_path"] is None
+    assert os.path.exists(video_info["uploader"]["avatar_path"])
 
     assert video_info["id"] == "TUQaGhPdlxs"
     assert video_info["date_uploaded"] == "2022-03-25T01:10:38Z"
@@ -39,9 +40,12 @@ def test_instagram_video() -> None:
     assert os.path.exists(video_info["thumbnail_path"])
     assert video_info["subtitle_path"] is None
 
-    assert video_info["channel"]["id"] == "52716733233"
-    assert video_info["channel"]["name"] == "Public Domain Gems"
-    assert video_info["channel"]["url"] == "https://www.instagram.com/publicdomaingems/"
+    assert video_info["uploader"]["id"] == "52716733233"
+    assert video_info["uploader"]["name"] == "Public Domain Gems"
+    assert (
+        video_info["uploader"]["url"] == "https://www.instagram.com/publicdomaingems/"
+    )
+    assert os.path.exists(video_info["uploader"]["avatar_path"])
 
     assert video_info["id"] == "DMWY8KkOS0n"
     assert video_info["date_uploaded"] == "2025-07-21T00:34:41Z"

@@ -17,7 +17,7 @@ $ yt-dlp_alexwlchan.py "https://www.youtube.com/watch?v=TUQaGhPdlxs"
     "id": "UCDeqps8f3hoHm6DHJoseDlg",
     "name": "Public Domain Archive",
     "url": "https://www.youtube.com/channel/UCDeqps8f3hoHm6DHJoseDlg",
-    "avatar_url": "https://yt3.googleusercontent.com/ytc/AIdro_kbeCfc5KrnLmdASZQ9u649IxrxEUXsUaxdSUR_jA_4SZQ=s0"
+    "avatar_path": "publicdomainarchive3052.png"
   },
   "site": "youtube"
 }
