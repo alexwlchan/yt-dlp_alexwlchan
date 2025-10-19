@@ -1,9 +1,10 @@
 import json
 import os
 import subprocess
+from typing import Any
 
 
-def download_video(url):
+def download_video(url: str) -> Any:
     output = subprocess.check_output(["python3", "yt-dlp_alexwlchan.py", url])
     video_info = json.loads(output)
 
@@ -25,7 +26,7 @@ def test_youtube_video() -> None:
     assert video_info["subtitle_path"] is None
 
     assert video_info["id"] == "TUQaGhPdlxs"
-    assert video_info["date_uploaded"] == "2008-04-19T03:51:21Z"
+    assert video_info["date_uploaded"] == "2022-03-25T01:10:38Z"
 
 
 def test_instagram_video() -> None:
@@ -40,10 +41,7 @@ def test_instagram_video() -> None:
 
     assert video_info["channel"]["id"] == "52716733233"
     assert video_info["channel"]["name"] == "Public Domain Gems"
-    assert (
-        video_info["channel"]["channel_url"]
-        == "https://www.instagram.com/publicdomaingems/"
-    )
+    assert video_info["channel"]["url"] == "https://www.instagram.com/publicdomaingems/"
 
     assert video_info["id"] == "DMWY8KkOS0n"
-    assert video_info["date_uploaded"] == "2008-04-19T03:51:21Z"
+    assert video_info["date_uploaded"] == "2025-07-21T00:34:41Z"

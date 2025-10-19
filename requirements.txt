@@ -6,11 +6,11 @@ certifi==2025.10.5
     # via
     #   requests
     #   yt-dlp
-charset-normalizer==3.4.3
+charset-normalizer==3.4.4
     # via requests
-gallery-dl==1.30.9
+gallery-dl==1.30.10
     # via -r requirements.in
-idna==3.10
+idna==3.11
     # via requests
 mutagen==1.47.0
     # via yt-dlp
@@ -26,5 +26,5 @@ urllib3==2.5.0
     #   yt-dlp
 websockets==15.0.1
     # via yt-dlp
-yt-dlp==2025.9.26
+yt-dlp==2025.10.14
     # via -r requirements.in

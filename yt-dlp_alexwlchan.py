@@ -6,12 +6,12 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from typing import TypedDict
+from typing import Any, TypedDict
 
 from yt_dlp import YoutubeDL
 
 
-ydl_opts = {
+ydl_opts: Any = {
     # Print progress output to stderr, not stdout
     "logtostderr": True,
     #
@@ -44,7 +44,7 @@ def get_youtube_avatar_url(channel_url: str) -> str:
     """
     Returns the avatar URL of a YouTube channel.
     """
-    ydl_opts = {
+    ydl_opts: Any = {
         # Print progress output to stderr, not stdout
         "logtostderr": True,
         #
@@ -57,11 +57,11 @@ def get_youtube_avatar_url(channel_url: str) -> str:
     }
 
     with YoutubeDL(ydl_opts) as ydl:
-        channel_info = ydl.extract_info(channel_url, download=False)
+        channel_info: Any = ydl.extract_info(channel_url, download=False)
 
     thumbnails = channel_info["thumbnails"]
     best_thumbnail = next(t for t in thumbnails if t["id"] == "avatar_uncropped")
-    return best_thumbnail["url"]
+    return str(best_thumbnail["url"])
 
 
 def get_instagram_avatar_url(channel_name: str) -> str:
@@ -88,10 +88,10 @@ class VideoInfo(TypedDict):
     url: str
     title: str
     description: str
-    date_posted: str
+    date_uploaded: str
     video_path: Path
     thumbnail_path: Path
-    subtitle_path: Path
+    subtitle_path: Path | None
     channel: ChannelInfo
     site: str
 
@@ -103,7 +103,7 @@ def download_video(url: str) -> VideoInfo:
     ydl_opts["outtmpl"] = str(tmp_dir / "%(title)s.%(ext)s")
 
     with YoutubeDL(ydl_opts) as ydl:
-        video_info = ydl.extract_info(url)
+        video_info: Any = ydl.extract_info(url)
 
     video_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".mp4")
     thumbnail_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".jpg")
@@ -111,6 +111,8 @@ def download_video(url: str) -> VideoInfo:
         subtitle_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".vtt")
     except StopIteration:
         subtitle_path = None
+
+    channel: ChannelInfo
 
     if video_info["extractor"] == "youtube":
         site = "youtube"
@@ -127,7 +129,7 @@ def download_video(url: str) -> VideoInfo:
         channel = {
             "id": video_info["uploader_id"],
             "name": video_info["uploader"],
-            "channel_url": f"https://www.instagram.com/{video_info['channel']}/",
+            "url": f"https://www.instagram.com/{video_info['channel']}/",
             "avatar_url": get_instagram_avatar_url(channel_name=video_info["channel"]),
         }
     else:
@@ -154,7 +156,7 @@ class PathEncoder(json.JSONEncoder):
     Custom JSON encoder that encodes paths as a string.
     """
 
-    def default(self, o):
+    def default(self, o: Any) -> Any:
         if isinstance(o, Path):
             return str(o.absolute())
         else:
