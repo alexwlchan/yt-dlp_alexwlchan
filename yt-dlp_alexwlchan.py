@@ -8,6 +8,8 @@ import sys
 import tempfile
 from typing import Any, TypedDict
 
+import httpx
+import hyperlink
 from yt_dlp import YoutubeDL
 
 
@@ -40,9 +42,40 @@ ydl_opts: Any = {
 }
 
 
-def get_youtube_avatar_url(channel_url: str) -> str:
+def _choose_filename_suffix(content_type: str) -> str:
     """
-    Returns the avatar URL of a YouTube channel.
+    Given an HTTP Content-Type header, choose the correct suffix for
+    the downloaded file.
+    """
+    if content_type == "image/png":
+        return ".png"
+    elif content_type == "image/jpeg":
+        return ".jpg"
+    else:
+        raise ValueError(f"Unrecognised content-type: {content_type}")
+
+
+def download_file(out_dir: Path, url: str, basename: str) -> Path:
+    """
+    Download an image, and pick a file extension based on the image type.
+    """
+    # Download the bytes, and save them to a file.
+    resp = httpx.get(url)
+    resp.raise_for_status()
+
+    suffix = _choose_filename_suffix(resp.headers["content-type"])
+
+    out_path = out_dir / (basename + suffix)
+
+    with open(out_path, "xb") as out_file:
+        out_file.write(resp.content)
+
+    return out_path
+
+
+def get_youtube_avatar(tmp_dir: Path, channel_url: str) -> Path:
+    """
+    Download the avatar of a YouTube channel.
     """
     ydl_opts: Any = {
         # Print progress output to stderr, not stdout
@@ -56,31 +89,43 @@ def get_youtube_avatar_url(channel_url: str) -> str:
         "playlist_items": "0",
     }
 
+    # Get the URL of the YouTube avatar.
     with YoutubeDL(ydl_opts) as ydl:
         channel_info: Any = ydl.extract_info(channel_url, download=False)
 
     thumbnails = channel_info["thumbnails"]
     best_thumbnail = next(t for t in thumbnails if t["id"] == "avatar_uncropped")
-    return str(best_thumbnail["url"])
+    thumbnail_url = best_thumbnail["url"]
+
+    # Work out the base filename, e.g. "https://www.youtube.com/@networkrail"
+    # becomes "networkrail"
+    u = hyperlink.parse(channel_url)
+    basename = u.path[0].replace("@", "")
+
+    return download_file(tmp_dir, url=thumbnail_url, basename=basename)
 
 
-def get_instagram_avatar_url(channel_name: str) -> str:
+def get_instagram_avatar(tmp_dir: Path, uploader_name: str) -> Path:
     """
-    Returns the avatar URL of an Instagram channel.
+    Download the avatar of an Instagram channel.
     """
     output = subprocess.check_output(
-        ["gallery-dl", "--get-urls", f"https://www.instagram.com/{channel_name}/avatar"]
+        [
+            "gallery-dl",
+            "--get-urls",
+            f"https://www.instagram.com/{uploader_name}/avatar",
+        ]
     )
     avatar_url = output.strip().decode("utf8")
 
-    return avatar_url
+    return download_file(tmp_dir, url=avatar_url, basename=uploader_name)
 
 
-class ChannelInfo(TypedDict):
+class UploaderInfo(TypedDict):
     id: str
     name: str
     url: str
-    avatar_url: str
+    avatar_path: Path
 
 
 class VideoInfo(TypedDict):
@@ -92,7 +137,7 @@ class VideoInfo(TypedDict):
     video_path: Path
     thumbnail_path: Path
     subtitle_path: Path | None
-    channel: ChannelInfo
+    uploader: UploaderInfo
     site: str
 
 
@@ -112,23 +157,25 @@ def download_video(url: str) -> VideoInfo:
     except StopIteration:
         subtitle_path = None
 
-    channel: ChannelInfo
+    uploader: UploaderInfo
 
     if video_info["extractor"] == "youtube":
         site = "youtube"
-        channel = {
-            "id": video_info["channel_id"],
-            "name": video_info["channel"],
-            "url": video_info["channel_url"],
-            "avatar_url": get_youtube_avatar_url(video_info["channel_url"]),
+        uploader = {
+            "id": video_info["uploader_id"],
+            "name": video_info["uploader"],
+            "url": video_info["uploader_url"],
+            "avatar_path": get_youtube_avatar(tmp_dir, video_info["uploader_url"]),
         }
     elif video_info["extractor"] == "Instagram":
         site = "instagram"
-        channel = {
+        uploader = {
             "id": video_info["uploader_id"],
             "name": video_info["uploader"],
             "url": f"https://www.instagram.com/{video_info['channel']}/",
-            "avatar_url": get_instagram_avatar_url(channel_name=video_info["channel"]),
+            "avatar_path": get_instagram_avatar(
+                tmp_dir, uploader_name=video_info["channel"]
+            ),
         }
     else:
         sys.exit(f"Unsupported extractor: {video_info['extractor']}")
@@ -144,7 +191,7 @@ def download_video(url: str) -> VideoInfo:
         "video_path": video_path,
         "thumbnail_path": thumbnail_path,
         "subtitle_path": subtitle_path,
-        "channel": channel,
+        "uploader": uploader,
         "site": site,
     }
 
