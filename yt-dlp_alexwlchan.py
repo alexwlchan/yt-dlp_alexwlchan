@@ -145,7 +145,7 @@ def download_video(url: str) -> VideoInfo:
     # Download all the videos to a temp directory; this allows the caller
     # to decide exactly where they want the video later.
     tmp_dir = Path(tempfile.mkdtemp())
-    ydl_opts["outtmpl"] = str(tmp_dir / "%(title)s.%(ext)s")
+    ydl_opts["outtmpl"] = str(tmp_dir / "%(title)s [%(id)s].%(ext)s")
 
     with YoutubeDL(ydl_opts) as ydl:
         video_info: Any = ydl.extract_info(url)
