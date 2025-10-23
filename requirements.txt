@@ -44,5 +44,5 @@ urllib3==2.5.0
     #   yt-dlp
 websockets==15.0.1
     # via yt-dlp
-yt-dlp==2025.10.14
+yt-dlp==2025.10.22
     # via -r requirements.in
