@@ -55,7 +55,7 @@ pycryptodomex==3.23.0
     # via -r requirements.txt
 pygments==2.19.2
     # via pytest
-pytest==9.0.1
+pytest==9.0.2
     # via -r dev_requirements.in
 requests==2.32.5
     # via
