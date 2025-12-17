@@ -3,6 +3,7 @@
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -141,6 +142,24 @@ class VideoInfo(TypedDict):
     site: str
 
 
+def cleanup_paths(dir_path: Path) -> None:
+    """
+    For every file in `dir_path`, remove URL-unsafe characters from
+    the filenames.
+    """
+    for p in dir_path.iterdir():
+        old_name = p.name
+
+        new_name = p.name.replace("#", " ").replace("？", " ").replace("⧸", "-")
+        new_name = re.sub(r"\s+", " ", new_name)
+
+        if old_name == new_name:
+            continue
+
+        assert not (dir_path / new_name).exists(), new_name
+        p.move(dir_path / new_name)
+
+
 def download_video(url: str) -> VideoInfo:
     # Download all the videos to a temp directory; this allows the caller
     # to decide exactly where they want the video later.
@@ -149,6 +168,8 @@ def download_video(url: str) -> VideoInfo:
 
     with YoutubeDL(ydl_opts) as ydl:
         video_info: Any = ydl.extract_info(url)
+
+    cleanup_paths(tmp_dir)
 
     video_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".mp4")
     thumbnail_path = next(p for p in tmp_dir.iterdir() if p.suffix == ".jpg")
