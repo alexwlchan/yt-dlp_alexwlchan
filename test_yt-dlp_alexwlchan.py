@@ -32,6 +32,21 @@ def test_youtube_video() -> None:
     assert video_info["video_path"].endswith(" [TUQaGhPdlxs].mp4")
 
 
+def test_youtube_path_is_cleaned_up() -> None:
+    """
+    Paths of YouTube videos get cleaned up during the download.
+    """
+    video = download_video("https://www.youtube.com/shorts/eso8JB7q0a0")
+    assert (
+        video["title"]
+        == "3D Printing Everyday for 365 Days 176/365  #stem #3dprinting #3dprint #ideas #useful"
+    )
+    assert (
+        os.path.basename(video["video_path"])
+        == "3D Printing Everyday for 365 Days 176-365 stem 3dprinting 3dprint ideas useful [eso8JB7q0a0].mp4"
+    )
+
+
 def test_instagram_video() -> None:
     """
     Download an Instagram video and check we get the expected output.
