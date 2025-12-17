@@ -151,7 +151,7 @@ def cleanup_paths(dir_path: Path) -> None:
     for p in dir_path.iterdir():
         old_name = p.name
 
-        new_name = p.name.replace("#", " ").replace("？", " ").replace("⧸", "-")
+        new_name = p.name.replace("#", " ").replace("？", " ").replace("⧸", "-").replace('：', '-')
         new_name = re.sub(r"\s+", " ", new_name)
 
         if old_name == new_name:
