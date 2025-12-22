@@ -12,7 +12,7 @@ certifi==2025.11.12
     #   yt-dlp
 charset-normalizer==3.4.4
     # via requests
-gallery-dl==1.31.0
+gallery-dl==1.31.1
     # via -r requirements.in
 h11==0.16.0
     # via httpcore
@@ -42,7 +42,7 @@ urllib3==2.6.2
     #   yt-dlp
 websockets==15.0.1
     # via yt-dlp
-yt-dlp==2025.12.8
+yt-dlp[default]==2025.12.8
     # via -r requirements.in
 yt-dlp-ejs==0.3.2
     # via yt-dlp
