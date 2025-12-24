@@ -2,5 +2,6 @@
 
 mypy
 pytest
+pytest-xdist
 ruff
 types-yt-dlp
