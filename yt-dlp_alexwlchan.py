@@ -12,6 +12,8 @@ from typing import Any, TypedDict
 import httpx
 import hyperlink
 from yt_dlp import YoutubeDL
+from yt_dlp.networking.exceptions import HTTPError as YouTubeDLHTTPError
+from yt_dlp.utils import DownloadError
 
 
 ydl_opts: Any = {
@@ -24,7 +26,6 @@ ydl_opts: Any = {
     # Download subtitles, or YouTube's automatic subtitles if there
     # aren't any.
     "writesubtitles": True,
-    "writeautomaticsub": True,
     #
     # Download video files as MP4 and thumbnails as JPEG, or convert
     # to those formats if they aren't the best available.
@@ -168,6 +169,32 @@ def download_video(url: str) -> VideoInfo:
 
     with YoutubeDL(ydl_opts) as ydl:
         video_info: Any = ydl.extract_info(url)
+
+    # Try to download automatic subtitles for a YouTube video.
+    #
+    # If you try to download autosubs for a video which doesn't have any,
+    # YouTube rturns an HTTP 429 "Too Many Requests" error. Ignore this
+    # error, but raise all others.
+    if video_info["extractor"] == "youtube" and not any(
+        p.suffix == ".vtt" for p in tmp_dir.iterdir()
+    ):
+        ydl_auto_subtitle_opts = {
+            "logtostderr": True,
+            "writeautomaticsub": True,
+            "skip_download": True,
+            "outtmpl": ydl_opts["outtmpl"],
+        }
+        with YoutubeDL(ydl_auto_subtitle_opts) as ydl:
+            try:
+                ydl.extract_info(url)
+            except DownloadError as e:
+                if (
+                    isinstance(e.exc_info[1], YouTubeDLHTTPError)
+                    and e.exc_info[1].status == 429
+                ):
+                    pass
+                else:
+                    raise
 
     cleanup_paths(tmp_dir)
 

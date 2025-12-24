@@ -47,6 +47,22 @@ def test_youtube_path_is_cleaned_up() -> None:
     )
 
 
+def test_youtube_video_does_not_http429() -> None:
+    """
+    Download a YouTube video without any subtitles or spoken audio.
+    """
+    video = download_video("https://www.youtube.com/watch?v=0N1_0SUGlDQ")
+    assert video["subtitle_path"] is None
+
+
+def test_youtube_video_with_automatic_subtitles() -> None:
+    """
+    Download a YouTube video with automatic subtitles.
+    """
+    video = download_video("https://www.youtube.com/shorts/hyGluE562oA")
+    assert video["subtitle_path"] is not None
+
+
 def test_instagram_video() -> None:
     """
     Download an Instagram video and check we get the expected output.
