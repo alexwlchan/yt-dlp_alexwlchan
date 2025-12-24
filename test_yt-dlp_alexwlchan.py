@@ -3,6 +3,8 @@ import os
 import subprocess
 from typing import Any
 
+from pymediainfo import MediaInfo
+
 
 def download_video(url: str) -> Any:
     output = subprocess.check_output(["python3", "yt-dlp_alexwlchan.py", url])
@@ -61,6 +63,24 @@ def test_youtube_video_with_automatic_subtitles() -> None:
     """
     video = download_video("https://www.youtube.com/shorts/hyGluE562oA")
     assert video["subtitle_path"] is not None
+
+
+def test_youtube_ignores_ai_upscaling() -> None:
+    """
+    Downloaded a YouTube video ignores AI upscaled versions.
+    """
+    # This is a video uploaded in 2009, and the highest resolution is
+    # 640x480, but as of October 2025, YouTube have started offering
+    # AI upscaled versions.
+    video = download_video("https://www.youtube.com/watch?v=0N1_0SUGlDQ")
+
+    media_info = MediaInfo.parse(video["video_path"])
+    video_track = next(
+                tr
+                for tr in media_info.tracks
+                if tr.track_type == "Video"
+            )
+    assert (video_track.width, video_track.height) == (640, 480)
 
 
 def test_instagram_video() -> None:
