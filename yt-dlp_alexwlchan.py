@@ -178,7 +178,7 @@ def download_video(url: str) -> VideoInfo:
     if video_info["extractor"] == "youtube" and not any(
         p.suffix == ".vtt" for p in tmp_dir.iterdir()
     ):
-        ydl_auto_subtitle_opts = {
+        ydl_auto_subtitle_opts: Any = {
             "logtostderr": True,
             "writeautomaticsub": True,
             "skip_download": True,
