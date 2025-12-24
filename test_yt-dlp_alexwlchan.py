@@ -75,11 +75,7 @@ def test_youtube_ignores_ai_upscaling() -> None:
     video = download_video("https://www.youtube.com/watch?v=0N1_0SUGlDQ")
 
     media_info = MediaInfo.parse(video["video_path"])
-    video_track = next(
-                tr
-                for tr in media_info.tracks
-                if tr.track_type == "Video"
-            )
+    video_track = next(tr for tr in media_info.tracks if tr.track_type == "Video")
     assert (video_track.width, video_track.height) == (640, 480)
 
 
