@@ -27,6 +27,10 @@ ydl_opts: Any = {
     # aren't any.
     "writesubtitles": True,
     #
+    # Ignore AI-upscaled videos from YouTube.
+    # See https://alexwlchan.net/til/2025/ignore-ai-scaled-videos/
+    "format": "bestvideo*[format_id!*=-sr]+bestaudio/best[format_id!*=-sr]",
+    #
     # Download video files as MP4 and thumbnails as JPEG, or convert
     # to those formats if they aren't the best available.
     "format_sort": ["res", "ext:mp4:m4a"],
