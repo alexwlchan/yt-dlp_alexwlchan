@@ -12,7 +12,7 @@ certifi==2025.11.12
     #   yt-dlp
 charset-normalizer==3.4.4
     # via requests
-gallery-dl==1.31.3
+gallery-dl==1.31.4
     # via -r requirements.in
 h11==0.16.0
     # via httpcore
