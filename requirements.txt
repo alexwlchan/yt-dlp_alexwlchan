@@ -42,7 +42,7 @@ urllib3==2.6.2
     #   yt-dlp
 websockets==15.0.1
     # via yt-dlp
-yt-dlp[default]==2025.12.8
+yt-dlp[default]==2026.1.31
     # via -r requirements.in
-yt-dlp-ejs==0.3.2
+yt-dlp-ejs==0.4.0
     # via yt-dlp
