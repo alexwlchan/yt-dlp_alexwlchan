@@ -81,7 +81,7 @@ requests==2.32.5
     #   yt-dlp
 ruff==0.14.10
     # via -r dev_requirements.in
-types-yt-dlp==2025.12.8.20260116
+types-yt-dlp==2026.1.31.20260202
     # via -r dev_requirements.in
 typing-extensions==4.15.0
     # via mypy
