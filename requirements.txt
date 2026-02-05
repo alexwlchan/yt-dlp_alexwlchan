@@ -6,13 +6,18 @@ brotli==1.2.0
     # via yt-dlp
 certifi==2026.1.4
     # via
+    #   curl-cffi
     #   httpcore
     #   httpx
     #   requests
     #   yt-dlp
+cffi==2.0.0
+    # via curl-cffi
 charset-normalizer==3.4.4
     # via requests
-gallery-dl==1.31.2
+curl-cffi==0.14.0
+    # via yt-dlp
+gallery-dl==1.31.5
     # via -r requirements.in
 h11==0.16.0
     # via httpcore
@@ -30,6 +35,8 @@ idna==3.11
     #   requests
 mutagen==1.47.0
     # via yt-dlp
+pycparser==3.0
+    # via cffi
 pycryptodomex==3.23.0
     # via yt-dlp
 requests==2.32.5
@@ -40,9 +47,9 @@ urllib3==2.6.3
     # via
     #   requests
     #   yt-dlp
-websockets==15.0.1
+websockets==16.0
     # via yt-dlp
-yt-dlp==2025.12.8
+yt-dlp==2026.2.4
     # via -r requirements.in
-yt-dlp-ejs==0.3.2
+yt-dlp-ejs==0.4.0
     # via yt-dlp

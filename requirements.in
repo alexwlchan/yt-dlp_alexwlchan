@@ -1,4 +1,4 @@
 gallery-dl
 httpx
 hyperlink
-yt-dlp[default]
+yt-dlp[curl-cffi,default]
