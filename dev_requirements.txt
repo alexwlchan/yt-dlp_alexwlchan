@@ -5,17 +5,14 @@ anyio==4.12.1
     #   -r requirements.txt
     #   httpx
 brotli==1.2.0
-    # via
-    #   -r requirements.txt
-    #   yt-dlp
-certifi==2026.1.4
+    # via -r requirements.txt
+certifi==2026.2.25
     # via
     #   -r requirements.txt
     #   curl-cffi
     #   httpcore
     #   httpx
     #   requests
-    #   yt-dlp
 cffi==2.0.0
     # via
     #   -r requirements.txt
@@ -25,12 +22,10 @@ charset-normalizer==3.4.4
     #   -r requirements.txt
     #   requests
 curl-cffi==0.14.0
-    # via
-    #   -r requirements.txt
-    #   yt-dlp
+    # via -r requirements.txt
 execnet==2.1.2
     # via pytest-xdist
-gallery-dl==1.31.6
+gallery-dl==1.31.7
     # via -r requirements.txt
 h11==0.16.0
     # via
@@ -53,12 +48,10 @@ idna==3.11
     #   requests
 iniconfig==2.3.0
     # via pytest
-librt==0.7.8
+librt==0.8.1
     # via mypy
 mutagen==1.47.0
-    # via
-    #   -r requirements.txt
-    #   yt-dlp
+    # via -r requirements.txt
 mypy==1.19.1
     # via -r dev_requirements.in
 mypy-extensions==1.1.0
@@ -74,9 +67,7 @@ pycparser==3.0
     #   -r requirements.txt
     #   cffi
 pycryptodomex==3.23.0
-    # via
-    #   -r requirements.txt
-    #   yt-dlp
+    # via -r requirements.txt
 pygments==2.19.2
     # via pytest
 pymediainfo==7.0.1
@@ -91,8 +82,7 @@ requests==2.32.5
     # via
     #   -r requirements.txt
     #   gallery-dl
-    #   yt-dlp
-ruff==0.15.0
+ruff==0.15.4
     # via -r dev_requirements.in
 types-yt-dlp==2026.2.21.20260223
     # via -r dev_requirements.in
@@ -102,15 +92,11 @@ urllib3==2.6.3
     # via
     #   -r requirements.txt
     #   requests
-    #   yt-dlp
 websockets==16.0
     # via
     #   -r requirements.txt
     #   types-yt-dlp
-    #   yt-dlp
-yt-dlp[curl-cffi,default]==2026.2.4
+yt-dlp==2026.2.21
     # via -r requirements.txt
-yt-dlp-ejs==0.4.0
-    # via
-    #   -r requirements.txt
-    #   yt-dlp
+yt-dlp-ejs==0.5.0
+    # via -r requirements.txt
