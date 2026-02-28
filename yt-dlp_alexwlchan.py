@@ -9,6 +9,7 @@ import sys
 import tempfile
 from typing import Any, TypedDict
 
+from chives.media import create_video_entity, VideoEntity
 import httpx
 import hyperlink
 from yt_dlp import YoutubeDL
@@ -120,6 +121,8 @@ def get_instagram_avatar(tmp_dir: Path, uploader_name: str) -> Path:
             "gallery-dl",
             "--get-urls",
             f"https://www.instagram.com/{uploader_name}/avatar",
+            "--cookies-from-browser",
+            "firefox",
         ]
     )
     avatar_url = output.strip().decode("utf8")
@@ -143,7 +146,9 @@ class VideoInfo(TypedDict):
     video_path: Path
     thumbnail_path: Path
     subtitle_path: Path | None
+    folder_path: Path
     uploader: UploaderInfo
+    entity: VideoEntity
     site: str
 
 
@@ -254,6 +259,14 @@ def download_video(url: str) -> VideoInfo:
         "thumbnail_path": thumbnail_path,
         "subtitle_path": subtitle_path,
         "uploader": uploader,
+        "entity": create_video_entity(
+            video_path,
+            poster_path=thumbnail_path,
+            subtitles_path=subtitle_path,
+            source_url=url,
+            background="#222222",
+        ),
+        "folder_path": tmp_dir,
         "site": site,
     }
 
