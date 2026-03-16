@@ -88,7 +88,7 @@ requests==2.32.5
     #   gallery-dl
 ruff==0.15.4
     # via -r dev_requirements.in
-types-yt-dlp==2026.2.21.20260223
+types-yt-dlp==2026.3.13.20260314
     # via -r dev_requirements.in
 typing-extensions==4.15.0
     # via mypy
