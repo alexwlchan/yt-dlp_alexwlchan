@@ -4,13 +4,15 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
+import ssl
 import subprocess
 import sys
 import tempfile
 from typing import Any, TypedDict
+import urllib.request
 
+import certifi
 from chives.media import create_video_entity, VideoEntity
-import httpx
 import hyperlink
 from yt_dlp import YoutubeDL
 from yt_dlp.networking.exceptions import HTTPError as YouTubeDLHTTPError
@@ -66,16 +68,18 @@ def download_file(out_dir: Path, url: str, basename: str) -> Path:
     """
     Download an image, and pick a file extension based on the image type.
     """
-    # Download the bytes, and save them to a file.
-    resp = httpx.get(url)
-    resp.raise_for_status()
+    ssl_context = ssl.create_default_context(cafile=certifi.where())
 
-    suffix = _choose_filename_suffix(resp.headers["content-type"])
+    with urllib.request.urlopen(url, context=ssl_context) as resp:
+        img_data = resp.read()
+        resp.close()
+
+        suffix = _choose_filename_suffix(resp.headers["content-type"])
 
     out_path = out_dir / (basename + suffix)
 
     with open(out_path, "xb") as out_file:
-        out_file.write(resp.content)
+        out_file.write(img_data)
 
     return out_path
 
