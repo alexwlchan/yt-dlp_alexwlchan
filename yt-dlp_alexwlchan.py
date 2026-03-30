@@ -4,14 +4,12 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
-import ssl
 import subprocess
 import sys
 import tempfile
 from typing import Any, TypedDict
-import urllib.request
 
-import certifi
+from chives.fetch import fetch_image
 from chives.media import create_video_entity, VideoEntity
 import hyperlink
 from yt_dlp import YoutubeDL
@@ -66,17 +64,10 @@ def _choose_filename_suffix(content_type: str) -> str:
 
 def download_file(out_dir: Path, url: str, basename: str) -> Path:
     """
-    Download an image, and pick a file extension based on the image type.
+    Download an image and return the download path.
     """
-    ssl_context = ssl.create_default_context(cafile=certifi.where())
-
-    with urllib.request.urlopen(url, context=ssl_context) as resp:
-        img_data = resp.read()
-        resp.close()
-
-        suffix = _choose_filename_suffix(resp.headers["content-type"])
-
-    out_path = out_dir / (basename + suffix)
+    img_data, img_format = fetch_image(url)
+    out_path = out_dir / (basename + "." + img_format)
 
     with open(out_path, "xb") as out_file:
         out_file.write(img_data)

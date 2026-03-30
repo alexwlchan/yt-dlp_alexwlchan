@@ -1,5 +1,4 @@
-alexwlchan-chives[media]
-certifi
+alexwlchan-chives[fetch,media]
 gallery-dl
 hyperlink
 yt-dlp[curl-cffi,default]
