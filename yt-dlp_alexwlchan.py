@@ -9,7 +9,7 @@ import sys
 import tempfile
 from typing import Any, TypedDict
 
-from chives.fetch import fetch_image
+from chives.fetch import download_image
 from chives.media import create_video_entity, VideoEntity
 import hyperlink
 from yt_dlp import YoutubeDL
@@ -49,32 +49,6 @@ ydl_opts: Any = {
 }
 
 
-def _choose_filename_suffix(content_type: str) -> str:
-    """
-    Given an HTTP Content-Type header, choose the correct suffix for
-    the downloaded file.
-    """
-    if content_type == "image/png":
-        return ".png"
-    elif content_type == "image/jpeg":
-        return ".jpg"
-    else:
-        raise ValueError(f"Unrecognised content-type: {content_type}")
-
-
-def download_file(out_dir: Path, url: str, basename: str) -> Path:
-    """
-    Download an image and return the download path.
-    """
-    img_data, img_format = fetch_image(url)
-    out_path = out_dir / (basename + "." + img_format)
-
-    with open(out_path, "xb") as out_file:
-        out_file.write(img_data)
-
-    return out_path
-
-
 def get_youtube_avatar(tmp_dir: Path, channel_url: str) -> Path:
     """
     Download the avatar of a YouTube channel.
@@ -104,7 +78,7 @@ def get_youtube_avatar(tmp_dir: Path, channel_url: str) -> Path:
     u = hyperlink.parse(channel_url)
     basename = u.path[0].replace("@", "")
 
-    return download_file(tmp_dir, url=thumbnail_url, basename=basename)
+    return download_image(url=thumbnail_url, out_prefix=tmp_dir / basename)
 
 
 def get_instagram_avatar(tmp_dir: Path, uploader_name: str) -> Path:
@@ -118,11 +92,12 @@ def get_instagram_avatar(tmp_dir: Path, uploader_name: str) -> Path:
             f"https://www.instagram.com/{uploader_name}/avatar",
             "--cookies-from-browser",
             "firefox",
-        ]
+        ],
+        text=True,
     )
-    avatar_url = output.strip().decode("utf8")
+    avatar_url = output.strip()
 
-    return download_file(tmp_dir, url=avatar_url, basename=uploader_name)
+    return download_image(url=avatar_url, out_prefix=tmp_dir / uploader_name)
 
 
 class UploaderInfo(TypedDict):
