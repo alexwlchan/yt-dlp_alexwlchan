@@ -17,7 +17,7 @@ charset-normalizer==3.4.6
     # via
     #   -r requirements.txt
     #   requests
-coverage==7.13.5
+coverage[toml]==7.13.5
     # via pytest-cov
 curl-cffi==0.14.0
     # via -r requirements.txt
@@ -76,7 +76,7 @@ requests==2.32.5
     #   gallery-dl
 ruff==0.15.7
     # via -r dev_requirements.in
-types-yt-dlp==2026.3.17.20260318
+types-yt-dlp==2026.3.17.20260402
     # via -r dev_requirements.in
 typing-extensions==4.15.0
     # via mypy
