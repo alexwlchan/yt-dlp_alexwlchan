@@ -8,10 +8,10 @@ import subprocess
 import sys
 import tempfile
 from typing import Any, TypedDict
+import urllib.parse
 
 from chives.fetch import download_image
 from chives.media import create_video_entity, VideoEntity
-import hyperlink
 from yt_dlp import YoutubeDL
 from yt_dlp.networking.exceptions import HTTPError as YouTubeDLHTTPError
 from yt_dlp.utils import DownloadError
@@ -75,8 +75,8 @@ def get_youtube_avatar(tmp_dir: Path, channel_url: str) -> Path:
 
     # Work out the base filename, e.g. "https://www.youtube.com/@networkrail"
     # becomes "networkrail"
-    u = hyperlink.parse(channel_url)
-    basename = u.path[0].replace("@", "")
+    u = urllib.parse.urlsplit(channel_url)
+    basename = u.path.split("/")[1].replace("@", "")
 
     return download_image(url=thumbnail_url, out_prefix=tmp_dir / basename)
 

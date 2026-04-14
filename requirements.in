@@ -1,4 +1,3 @@
 alexwlchan-chives[fetch,media]
 gallery-dl
-hyperlink
 yt-dlp[curl-cffi,default]
