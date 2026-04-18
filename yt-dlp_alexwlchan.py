@@ -53,6 +53,22 @@ ydl_opts: Any = {
 }
 
 
+def normalise_url(url: str) -> str:
+    """
+    Remove unnecessary tracking parameters from a URL.
+    """
+    u = urllib.parse.urlsplit(url)
+
+    # If it's a YouTube URL, remove all query parameters except video ID (v)
+    if u.netloc == "www.youtube.com":
+        qs = urllib.parse.parse_qsl(u.query)
+        qs = [(k, v) for k, v in qs if k == "v"]
+        query = urllib.parse.urlencode(qs)
+        return urllib.parse.urlunsplit((u.scheme, u.netloc, u.path, query, ""))
+
+    return url
+
+
 def get_youtube_avatar(tmp_dir: Path, channel_url: str) -> Path:
     """
     Download the avatar of a YouTube channel.

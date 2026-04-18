@@ -11,6 +11,7 @@ import pytest
 yt_dlp_alexwlchan = importlib.import_module("yt-dlp_alexwlchan")
 
 download_video = yt_dlp_alexwlchan.download_video
+normalise_url = yt_dlp_alexwlchan.normalise_url
 
 
 def test_youtube_video() -> None:
@@ -100,3 +101,31 @@ def test_instagram_video() -> None:
     assert video_info["date_uploaded"] == "2025-07-21T00:34:41Z"
 
     assert video_info["video_path"].endswith(" [DMWY8KkOS0n].mp4")
+
+
+@pytest.mark.parametrize(
+    "url, expected",
+    [
+        (
+            "https://www.instagram.com/reel/DMWY8KkOS0n/",
+            "https://www.instagram.com/reel/DMWY8KkOS0n/",
+        ),
+        (
+            "https://www.youtube.com/shorts/hyGluE562oA",
+            "https://www.youtube.com/shorts/hyGluE562oA",
+        ),
+        (
+            "https://www.youtube.com/watch?v=0N1_0SUGlDQ",
+            "https://www.youtube.com/watch?v=0N1_0SUGlDQ",
+        ),
+        (
+            "https://www.youtube.com/watch?v=0N1_0SUGlDQ&app=desktop&list=LL&index=43",
+            "https://www.youtube.com/watch?v=0N1_0SUGlDQ",
+        ),
+    ],
+)
+def test_normalise_url(url: str, expected: str) -> None:
+    """
+    Tests for `normalise_url`.
+    """
+    assert normalise_url(url) == expected
