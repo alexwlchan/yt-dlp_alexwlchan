@@ -300,6 +300,6 @@ if __name__ == "__main__":
 
     video_info = download_video(url)
 
-    json_string = json.dumps(video_info, indent=2, cls=PathEncoder)
+    json_string = json.dumps(video_info, indent=2, cls=PathEncoder, ensure_ascii=False)
 
     print(json_string)
