@@ -85,6 +85,11 @@ def get_instagram_avatar(tmp_dir: Path, uploader_name: str) -> Path:
     """
     Download the avatar of an Instagram channel.
     """
+    # Somewhere gallery-dl is caching avatars, so the URL it returns
+    # can have an expired signature. For now, just clear the cache before
+    # every run to flush any stale data.
+    subprocess.check_call(["gallery-dl", "--clear-cache", "ALL"])
+
     output = subprocess.check_output(
         [
             "gallery-dl",
