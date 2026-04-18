@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+yt-dlp_alexwlchan is a personal wrapper around yt-dlp that downloads a video
+with my preferred settings.
+"""
 
 from datetime import datetime, timezone
 import json
@@ -106,6 +110,10 @@ def get_instagram_avatar(tmp_dir: Path, uploader_name: str) -> Path:
 
 
 class UploaderInfo(TypedDict):
+    """
+    Information about a video's uploader.
+    """
+
     id: str
     name: str
     url: str
@@ -113,6 +121,10 @@ class UploaderInfo(TypedDict):
 
 
 class VideoInfo(TypedDict):
+    """
+    Information about a downloaded video.
+    """
+
     id: str
     url: str
     title: str
@@ -156,6 +168,9 @@ def cleanup_paths(dir_path: Path) -> None:
 
 
 def download_video(url: str) -> VideoInfo:
+    """
+    Download a video with yt-dlp and return metadata about the video.
+    """
     # Download all the videos to a temp directory; this allows the caller
     # to decide exactly where they want the video later.
     tmp_dir = Path(tempfile.mkdtemp())
@@ -252,6 +267,9 @@ class PathEncoder(json.JSONEncoder):
     """
 
     def default(self, o: Any) -> Any:
+        """
+        Encode paths as a string; everything else us the default encoder.
+        """
         if isinstance(o, Path):
             return str(o.absolute())
         else:
@@ -260,7 +278,7 @@ class PathEncoder(json.JSONEncoder):
 
 if __name__ == "__main__":
     try:
-        url = sys.argv[1]
+        url = normalise_url(sys.argv[1])
     except IndexError:
         sys.exit(f"Usage: {__file__} URL")
 

@@ -1,16 +1,16 @@
-import json
+"""
+Tests for yt-dlp_alexwlchan.
+"""
+
+import importlib
 import os
-import subprocess
-from typing import Any
 
 from pymediainfo import MediaInfo
+import pytest
 
+yt_dlp_alexwlchan = importlib.import_module("yt-dlp_alexwlchan")
 
-def download_video(url: str) -> Any:
-    output = subprocess.check_output(["python3", "yt-dlp_alexwlchan.py", url])
-    video_info = json.loads(output)
-
-    return video_info
+download_video = yt_dlp_alexwlchan.download_video
 
 
 def test_youtube_video() -> None:
@@ -40,12 +40,12 @@ def test_youtube_path_is_cleaned_up() -> None:
     """
     video = download_video("https://www.youtube.com/shorts/eso8JB7q0a0")
     assert (
-        video["title"]
-        == "3D Printing Everyday for 365 Days 176/365  #stem #3dprinting #3dprint #ideas #useful"
+        video["title"] == "3D Printing Everyday for 365 Days 176/365  "
+        "#stem #3dprinting #3dprint #ideas #useful"
     )
     assert (
-        os.path.basename(video["video_path"])
-        == "3D Printing Everyday for 365 Days 176-365 stem 3dprinting 3dprint ideas useful [eso8JB7q0a0].mp4"
+        os.path.basename(video["video_path"]) == "3D Printing Everyday for 365 Days "
+        "176-365 stem 3dprinting 3dprint ideas useful [eso8JB7q0a0].mp4"
     )
 
 
