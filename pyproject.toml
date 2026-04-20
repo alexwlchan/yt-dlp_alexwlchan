@@ -1,0 +1,12 @@
+[project]
+name = "yt-dlp_alexwlchan"
+version = "1.0"
+
+[tool.coverage.run]
+branch = true
+source = ["yt-dlp_alexwlchan", "test_yt-dlp_alexwlchan"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 68

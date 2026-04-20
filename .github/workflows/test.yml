@@ -37,7 +37,7 @@ jobs:
         ruff format --check .
 
     - name: Check types
-      run: mypy *.py --strict
+      run: ty check *.py
 
     # I don't run tests in GitHub Actions because YouTube blocks yt-dlp
     # without authentication, and I don't want to sort out passing cookies

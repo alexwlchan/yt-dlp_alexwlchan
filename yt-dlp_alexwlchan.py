@@ -214,7 +214,8 @@ def download_video(url: str) -> VideoInfo:
                 ydl.extract_info(url)
             except DownloadError as e:
                 if (
-                    isinstance(e.exc_info[1], YouTubeDLHTTPError)
+                    e.exc_info is not None
+                    and isinstance(e.exc_info[1], YouTubeDLHTTPError)
                     and e.exc_info[1].status == 429
                 ):
                     pass

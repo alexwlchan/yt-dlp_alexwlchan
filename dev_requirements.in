@@ -1,8 +1,7 @@
 -r requirements.txt
 
-mypy
 pymediainfo
 pytest-cov
 pytest-xdist
 ruff
-types-yt-dlp
+ty
