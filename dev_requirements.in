@@ -1,7 +1,0 @@
--r requirements.txt
-
-pymediainfo
-pytest-cov
-pytest-xdist
-ruff
-ty
